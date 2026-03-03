@@ -313,7 +313,7 @@ SingleCellWorkshop/
 ### B. データのダウンロード
 
 本講義では **GSE278962** (JIA Synovial CITE-seq) のデータを使用します。
-- 講義資料で配布される `.rds` ファイルを[こちら](https://drive.google.com/drive/folders/1ZW-uxlEOZ7xWBXT1D6wTNbN6fYFvRMye?usp=sharing)よりダウンロードし、上記の `data/` フォルダに配置してください。
+- 講義資料で配布される `.rds` ファイルを[こちら](https://drive.google.com/drive/folders/18LeP2pMmQd7oYmMOLgW2Cr2P6e52UrSj?usp=sharing)よりダウンロードし、上記の `data/` フォルダに配置してください。
 - 講義資料で作業ディレクトリの設定方法を確認してください。
 
 ---
@@ -443,7 +443,52 @@ conda install -c conda-forge r-seurat=5.2.1 r-seuratobject=5.0.2 -y
 
 ---
 
-## 8. 参考：sessionInfo() の完全出力
+## 8. 代替手段：Condaを使わない環境構築
+
+どうしてもCondaでの環境構築がうまくいかない場合、RとRStudio（またはJupyter Notebook）を個別にインストールし、パッケージを手動でインストールすることも可能です。
+
+### A. Rのインストール
+1. CRAN (The Comprehensive R Archive Network) にアクセスします：https://cran.r-project.org/
+2. お使いのOS（macOS または Windows）に合わせてRのインストーラーをダウンロードし、実行します。講義環境に合わせる場合は**R 4.3.2**の過去バージョンを探してインストールしてください（最新版でも動作する可能性はありますが、図の出力等が異なる場合があります）。
+
+### B. RStudio のインストール
+1. Positの公式サイトにアクセスします：https://posit.co/download/rstudio-desktop/
+2. 無料版（Free version）のRStudio Desktopをダウンロードし、インストールします。
+
+### C. Jupyter Notebookの設定（RStudioの代わりに使用する場合）
+RStudioではなくJupyter Notebookを使用したい場合は、以下の手順で設定します。
+1. Python/Jupyterがインストールされている環境で、RのコンソールまたはRStudioを開きます。
+2. 以下のコマンドを実行してIRkernelをインストールします：
+   ```r
+   install.packages("IRkernel")
+   IRkernel::installspec(user = FALSE)
+   ```
+3. これでJupyter NotebookからRが選択できるようになります。
+
+### D. Rパッケージの手動インストール
+RStudio（またはJupyter NotebookのRカーネル）を起動し、コンソールで以下のコマンドを実行してパッケージをインストールします。
+
+```r
+# CRANパッケージのインストール
+install.packages(c("patchwork", "dplyr", "magrittr", "rmarkdown", "knitr", "bookdown"))
+
+# Seurat 5.2.1 をバージョン指定でインストールする場合
+# remotes パッケージを使ってインストールします
+if (!require("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_version("Seurat", version = "5.2.1")
+
+# Bioconductor パッケージのインストール
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+BiocManager::install("BiocStyle")
+```
+
+すべてのインストールが完了したら、セクション6「インストールの確認」のスクリプトを実行して正しくインストールされたか確認してください。
+
+---
+
+## 9. 参考：sessionInfo() の完全出力
 
 `single_cell_analysis_T.html` を生成した環境の完全な情報です。トラブルシューティング時にご参照ください。
 

@@ -313,7 +313,7 @@ SingleCellWorkshop/
 ### B. Downloading Data
 
 This lecture uses data from **GSE278962** (JIA Synovial CITE-seq).
-- Download the `.rds` files distributed in the lecture material from [here](https://drive.google.com/drive/folders/1ZW-uxlEOZ7xWBXT1D6wTNbN6fYFvRMye?usp=sharing) and place them in the `data/` folder mentioned above.
+- Download the `.rds` files distributed in the lecture material from [here](https://drive.google.com/drive/folders/18LeP2pMmQd7oYmMOLgW2Cr2P6e52UrSj?usp=sharing) and place them in the `data/` folder mentioned above.
 - Check the lecture material for how to set the working directory.
 
 ---
@@ -437,7 +437,52 @@ Launching from a desktop shortcut might use a different version of R.
 
 ---
 
-## 8. Reference: Full sessionInfo() Output
+## 8. Alternative: Environment Setup Without Conda
+
+If setting up the environment using Conda consistently fails, you can install R and RStudio (or Jupyter Notebook) separately and install the packages manually.
+
+### A. Installing R
+1. Access CRAN (The Comprehensive R Archive Network): https://cran.r-project.org/
+2. Download and run the R installer for your OS (macOS or Windows). To match the lecture environment, search for and install **R 4.3.2** from the past releases (the latest version may work, but outputs such as plots might differ slightly).
+
+### B. Installing RStudio
+1. Access the official Posit website: https://posit.co/download/rstudio-desktop/
+2. Download and install the free version of RStudio Desktop.
+
+### C. Setting up Jupyter Notebook (If using instead of RStudio)
+If you prefer to use Jupyter Notebook instead of RStudio, follow these steps:
+1. Open the R console or RStudio in an environment where Python/Jupyter is already installed.
+2. Run the following commands to install IRkernel:
+   ```r
+   install.packages("IRkernel")
+   IRkernel::installspec(user = FALSE)
+   ```
+3. You will now be able to select R when creating a new Jupyter Notebook.
+
+### D. Manual Installation of R Packages
+Launch RStudio (or a Jupyter Notebook with the R kernel) and execute the following commands in the console to install the necessary packages.
+
+```r
+# Install CRAN packages
+install.packages(c("patchwork", "dplyr", "magrittr", "rmarkdown", "knitr", "bookdown"))
+
+# Install Seurat version 5.2.1 specifically
+# We use the remotes package to specify the version
+if (!require("remotes", quietly = TRUE)) install.packages("remotes")
+remotes::install_version("Seurat", version = "5.2.1")
+
+# Install Bioconductor packages
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+BiocManager::install("BiocStyle")
+```
+
+Once all installations are complete, run the script in Section 6 "Verifying Installation" to check if everything is installed correctly.
+
+---
+
+## 9. Reference: Full sessionInfo() Output
 
 This is the complete information for the environment that generated `single_cell_analysis_T.html`. Please refer to it during troubleshooting.
 

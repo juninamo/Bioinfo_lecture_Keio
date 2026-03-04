@@ -302,12 +302,9 @@ mkdir data
 作成後の構成は以下のようになります：
 ```
 SingleCellWorkshop/
-├── data/
-│   ├── JIAsyno_CITEseq_T_share.rds         (T細胞解析用データ)
-│   ├── JIAsyno_CITEseq_T_full.rds          (検証用フルデータ)
-│   └── JIAsyno_CITEseq_full.rds            (全体解析用データ)
+│── JIAsyno_CITEseq_T_NK.rds                  (T細胞解析用データ)
 ├── single_cell_analysis.Rmd                  (Part 1: 全体解析)
-└── single_cell_analysis_T.Rmd                (Part 2: T細胞サブクラス解析)
+└── single_cell_analysis_part2_Tcell.Rmd      (Part 2: T細胞サブクラス解析)
 ```
 
 ### B. データのダウンロード

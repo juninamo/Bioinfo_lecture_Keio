@@ -302,12 +302,10 @@ mkdir data
 The structure after creation will look like this:
 ```
 SingleCellWorkshop/
-├── data/
-│   ├── JIAsyno_CITEseq_T_share.rds         (Data for T-cell analysis)
-│   ├── JIAsyno_CITEseq_T_full.rds          (Full data for verification)
-│   └── JIAsyno_CITEseq_full.rds            (Data for overall analysis)
+│── JIAsyno_CITEseq_T_NK.rds                  (Data for T-cell analysis)
 ├── single_cell_analysis.Rmd                  (Part 1: Overall analysis)
-└── single_cell_analysis_T.Rmd                (Part 2: T-cell subclass analysis)
+└── single_cell_analysis_part2_Tcell.Rmd      (Part 2: T-cell subclass analysis)
+
 ```
 
 ### B. Downloading Data

@@ -158,6 +158,10 @@ Install the packages used in `single_cell_analysis_T.Rmd`.
 conda install -c conda-forge \
   r-seurat=5.2.1 \
   r-patchwork=1.1.3 \
+  r-ggplot2 \
+  r-harmony \
+  r-symphony \
+  r-lisi \
   r-dplyr=1.1.4 \
   r-magrittr=2.0.3 \
   r-rmarkdown=2.25 \
@@ -169,13 +173,13 @@ conda install -c conda-forge \
 > **💡 Note for Windows**: The `\` (backslash, line continuation character) may not work on Windows.
 > In that case, combine everything into **one line**:
 > ```bash
-> conda install -c conda-forge r-seurat=5.2.1 r-patchwork=1.1.3 r-dplyr=1.1.4 r-magrittr=2.0.3 r-rmarkdown=2.25 r-knitr=1.45 r-bookdown=0.37 -y
+> conda install -c conda-forge r-seurat=5.2.1 r-patchwork=1.1.3 r-ggplot2 r-harmony r-symphony r-lisi r-dplyr=1.1.4 r-magrittr=2.0.3 r-rmarkdown=2.25 r-knitr=1.45 r-bookdown=0.37 -y
 > ```
 
 > **⚠️ If an error occurs with the version specification**:
 > Remove all version numbers such as `=5.2.1` and try again.
 > ```bash
-> conda install -c conda-forge r-seurat r-patchwork r-dplyr r-magrittr r-rmarkdown r-knitr r-bookdown -y
+> conda install -c conda-forge r-seurat r-patchwork r-ggplot2 r-harmony r-symphony r-lisi r-dplyr r-magrittr r-rmarkdown r-knitr r-bookdown -y
 > ```
 
 ### Step D. Installing Bioconductor Packages (via Conda)
@@ -184,17 +188,18 @@ conda install -c conda-forge \
 # Install BiocStyle from the Bioconda channel
 conda install -c bioconda -c conda-forge \
   bioconductor-biocstyle=2.30.0 \
+  bioconductor-stabmap \
   -y
 ```
 
 > **💡 Windows One-Line Version**:
 > ```bash
-> conda install -c bioconda -c conda-forge bioconductor-biocstyle=2.30.0 -y
+> conda install -c bioconda -c conda-forge bioconductor-biocstyle=2.30.0 bioconductor-stabmap -y
 > ```
 
 > **⚠️ If an error occurs with the version specification**:
 > ```bash
-> conda install -c bioconda -c conda-forge bioconductor-biocstyle -y
+> conda install -c bioconda -c conda-forge bioconductor-biocstyle bioconductor-stabmap -y
 > ```
 
 ---
@@ -329,8 +334,8 @@ cat(R.version.string, "\n\n")
 cat("=== Package Version Verification ===\n")
 
 # Check required packages (used in single_cell_analysis_T.Rmd)
-packages <- c("Seurat", "BiocStyle", "patchwork",
-              "dplyr", "magrittr", "knitr", "rmarkdown")
+packages <- c("Seurat", "BiocStyle", "patchwork", "ggplot2", "harmony", "symphony",
+              "lisi", "StabMap", "dplyr", "magrittr", "knitr", "rmarkdown")
 
 for (pkg in packages) {
   tryCatch({
@@ -353,6 +358,11 @@ cat("If all of the above packages are marked with ✓, you are ready!\n")
 | Seurat    | 5.2.1             |
 | BiocStyle | 2.30.0            |
 | patchwork | 1.1.3             |
+| ggplot2   | (Any)             |
+| harmony   | (Any)             |
+| symphony  | (Any)             |
+| lisi      | (Any)             |
+| StabMap   | (Any)             |
 | dplyr     | 1.1.4             |
 | magrittr  | 2.0.3             |
 | knitr     | 1.45              |
@@ -462,7 +472,7 @@ Launch RStudio (or a Jupyter Notebook with the R kernel) and execute the followi
 
 ```r
 # Install CRAN packages
-install.packages(c("patchwork", "dplyr", "magrittr", "rmarkdown", "knitr", "bookdown"))
+install.packages(c("patchwork", "ggplot2", "harmony", "symphony", "lisi", "dplyr", "magrittr", "rmarkdown", "knitr", "bookdown"))
 
 # Install Seurat version 5.2.1 specifically
 # We use the remotes package to specify the version
@@ -473,7 +483,7 @@ remotes::install_version("Seurat", version = "5.2.1")
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
-BiocManager::install("BiocStyle")
+BiocManager::install(c("BiocStyle", "StabMap"))
 ```
 
 Once all installations are complete, run the script in Section 6 "Verifying Installation" to check if everything is installed correctly.

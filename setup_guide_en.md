@@ -472,18 +472,22 @@ Launch RStudio (or a Jupyter Notebook with the R kernel) and execute the followi
 
 ```r
 # Install CRAN packages
-install.packages(c("patchwork", "ggplot2", "harmony", "symphony", "lisi", "dplyr", "magrittr", "rmarkdown", "knitr", "bookdown"))
+install.packages(c("patchwork", "ggplot2", "harmony", "symphony", "dplyr", "magrittr", "rmarkdown", "knitr", "bookdown"))
 
 # Install Seurat version 5.2.1 specifically
-# We use the remotes package to specify the version
+# Use the remotes package to specify the Seurat version
 if (!require("remotes", quietly = TRUE)) install.packages("remotes")
 remotes::install_version("Seurat", version = "5.2.1")
+
+# Install LISI and StabMap from GitHub
+remotes::install_github("immunogenomics/LISI")
+remotes::install_github("SydneyBioX/StabMap")
 
 # Install Bioconductor packages
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
-BiocManager::install(c("BiocStyle", "StabMap"))
+BiocManager::install("BiocStyle")
 ```
 
 Once all installations are complete, run the script in Section 6 "Verifying Installation" to check if everything is installed correctly.

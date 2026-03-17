@@ -45,7 +45,7 @@ If you want to check if the command line works before installing Miniforge, you 
 3. You are ready when a blue screen displays `PS C:\Users\(username)>`.
 
 > **⚠️ Note (Windows)**: For Section 2 and onwards, always use the **Miniforge Prompt**.
-> The Miniforge Prompt is a command line specifically configured to use Conda commands.
+> The Miniforge Prompt is a command line specifically configured to use Conda and Mamba commands.
 
 ### How to Execute Commands
 
@@ -55,15 +55,15 @@ Please copy and paste the text from the code blocks in this guide **one line at 
 ```bash
 # This line is a "comment" (lines starting with # are not executed)
 # Below is an example of a command:
-conda --version
+mamba --version
 ```
 
 ---
 
-## 2. Installing Conda (Miniforge)
+## 2. Installing Mamba (Miniforge)
 
-We will use **Conda** to install everything, including R itself and R packages.
-Conda allows you to specify exact versions and manage environments separately.
+We will use **Mamba** to install everything, including R itself and R packages.
+We recommend using Mamba instead of Conda because Mamba is a C++ reimplementation of Conda that is significantly faster at resolving dependencies and installing packages. Like Conda, it allows you to specify exact versions and manage environments separately.
 
 ### For macOS
 
@@ -99,43 +99,34 @@ You have successfully installed it if `(base)` appears at the beginning of the p
 4. After installation, open the **Start Menu**, search for "**Miniforge Prompt**", and open it.
 
 > **💡 Hint (Windows)**: Perform all subsequent tasks in the **Miniforge Prompt**.
-> The `conda` command may not work in the regular Command Prompt or PowerShell.
+> The `mamba` or `conda` commands may not work in the regular Command Prompt or PowerShell.
 
 ---
 
-## 3. Creating a Conda Environment and Installing Software
+## 3. Creating an Environment and Installing Software
 
 Enter and execute the following commands **one line at a time** in the Terminal (macOS) or Miniforge Prompt (Windows).
 
-### Step A. Creating the Conda Environment (R 4.3.2)
+### Step A. Creating the Environment (R 4.3.2 and Jupyter Notebook)
 
-#### For macOS
+In this guide, we recommend using **Jupyter Notebook** instead of RStudio. The reason is that it allows you to combine code, execution outputs, and explanatory notes in a single interactive document format. This makes it easier to verify the reproducibility of your analysis workflow and share it with other researchers.
+
+#### For macOS / Windows
 
 ```bash
 # Create an environment named scworkshop
-# This installs R 4.3.2 and RStudio simultaneously
-conda create -n scworkshop -c conda-forge r-base=4.3.2 rstudio=2024.04.2 -y
-```
-
-#### For Windows
-
-Since RStudio cannot be installed via Conda on Windows, only R will be installed.
-
-```bash
-# Create an environment named scworkshop (R 4.3.2 only)
-conda create -n scworkshop -c conda-forge r-base=4.3.2 -y
+# This installs R 4.3.2, Jupyter Notebook, and IRkernel (to use R in Jupyter)
+mamba create -n scworkshop -c conda-forge r-base=4.3.2 jupyter r-irkernel -y
 ```
 
 > **⏱ Note**: Initial installation may take 10–20 minutes. Please wait even if it seems to have stopped.
 
 > **⚠️ If an error occurs with the version specification**:
-> Remove the version numbers such as `=4.3.2` or `=2024.04.2` and try again.
+> Remove the version numbers such as `=4.3.2` and try again.
 > Example:
 > ```bash
-> # macOS (without version)
-> conda create -n scworkshop -c conda-forge r-base rstudio -y
-> # Windows (without version)
-> conda create -n scworkshop -c conda-forge r-base -y
+> # Without version
+> mamba create -n scworkshop -c conda-forge r-base jupyter r-irkernel -y
 > ```
 
 ### Step B. Activating the Environment
@@ -149,13 +140,13 @@ Confirm that the beginning of the prompt has changed to `(scworkshop)`.
 
 > **⚠️ Important**: You must run `conda activate scworkshop` every time you open the Terminal / Miniforge Prompt.
 
-### Step C. Installing R Packages (via Conda)
+### Step C. Installing R Packages (via Mamba)
 
 Install the packages used in `single_cell_analysis_T.Rmd`.
 
 ```bash
 # CRAN Packages
-conda install -c conda-forge \
+mamba install -c conda-forge \
   r-seurat=5.2.1 \
   r-patchwork=1.1.3 \
   r-ggplot2 \
@@ -173,20 +164,20 @@ conda install -c conda-forge \
 > **💡 Note for Windows**: The `\` (backslash, line continuation character) may not work on Windows.
 > In that case, combine everything into **one line**:
 > ```bash
-> conda install -c conda-forge r-seurat=5.2.1 r-patchwork=1.1.3 r-ggplot2 r-harmony r-symphony r-lisi r-dplyr=1.1.4 r-magrittr=2.0.3 r-rmarkdown=2.25 r-knitr=1.45 r-bookdown=0.37 -y
+> mamba install -c conda-forge r-seurat=5.2.1 r-patchwork=1.1.3 r-ggplot2 r-harmony r-symphony r-lisi r-dplyr=1.1.4 r-magrittr=2.0.3 r-rmarkdown=2.25 r-knitr=1.45 r-bookdown=0.37 -y
 > ```
 
 > **⚠️ If an error occurs with the version specification**:
 > Remove all version numbers such as `=5.2.1` and try again.
 > ```bash
-> conda install -c conda-forge r-seurat r-patchwork r-ggplot2 r-harmony r-symphony r-lisi r-dplyr r-magrittr r-rmarkdown r-knitr r-bookdown -y
+> mamba install -c conda-forge r-seurat r-patchwork r-ggplot2 r-harmony r-symphony r-lisi r-dplyr r-magrittr r-rmarkdown r-knitr r-bookdown -y
 > ```
 
-### Step D. Installing Bioconductor Packages (via Conda)
+### Step D. Installing Bioconductor Packages (via Mamba)
 
 ```bash
 # Install BiocStyle from the Bioconda channel
-conda install -c bioconda -c conda-forge \
+mamba install -c bioconda -c conda-forge \
   bioconductor-biocstyle=2.30.0 \
   bioconductor-stabmap \
   -y
@@ -194,71 +185,35 @@ conda install -c bioconda -c conda-forge \
 
 > **💡 Windows One-Line Version**:
 > ```bash
-> conda install -c bioconda -c conda-forge bioconductor-biocstyle=2.30.0 bioconductor-stabmap -y
+> mamba install -c bioconda -c conda-forge bioconductor-biocstyle=2.30.0 bioconductor-stabmap -y
 > ```
 
 > **⚠️ If an error occurs with the version specification**:
 > ```bash
-> conda install -c bioconda -c conda-forge bioconductor-biocstyle bioconductor-stabmap -y
+> mamba install -c bioconda -c conda-forge bioconductor-biocstyle bioconductor-stabmap -y
 > ```
 
 ---
 
-## 4. Installing and Launching RStudio
+## 4. Launching Jupyter Notebook
 
-### For macOS
-
-RStudio was installed along with Conda in Step A. Launch it from the Terminal:
+Launch Jupyter Notebook, which was installed in Step A. The procedure is the same for both macOS and Windows.
 
 ```bash
 # Activate the environment (if not already done)
 conda activate scworkshop
 
-# Launch RStudio
-rstudio &
+# Launch Jupyter Notebook
+jupyter notebook
 ```
 
-> **⚠️ Note (macOS)**: Do not launch RStudio from the desktop shortcut; always launch it using the command above.
-> If you don't use the command, the R in the Conda environment might not be utilized.
+Upon execution, your web browser will open automatically and display the Jupyter Notebook interface.
 
-### For Windows
+> **💡 Creating a new notebook**: You can create a new R notebook by selecting "R" from the "New" menu in the top right corner. You can run R code and proceed with your data analysis in the created notebook.
+> 
+> **⚠️ Note**: Do not launch Jupyter Notebook from a desktop shortcut. Always launch it from the Terminal / Miniforge Prompt using the command above. This ensures that the R in the correct environment (`scworkshop`) is used.
 
-On Windows, install RStudio manually and configure it to use R from the Conda environment.
-
-#### 1. Installing RStudio
-
-1. Go to [posit.co/download/rstudio-desktop/](https://posit.co/download/rstudio-desktop/).
-2. Download and run the Windows installer for the **Free version**.
-
-#### 2. Launching RStudio from the Miniforge Prompt
-
-Since R installed via Conda is not registered in the Windows registry, it cannot be selected from the RStudio settings (Global Options).
-Instead, **set an environment variable and launch RStudio from the Miniforge Prompt**.
-
-Open the Miniforge Prompt and **execute the following 3 lines every time**:
-
-```bash
-conda activate scworkshop
-set RSTUDIO_WHICH_R=%CONDA_PREFIX%\Scripts\R.exe
-"C:\Program Files\RStudio\rstudio.exe"
-```
-
-> **⚠️ If an error occurs with the path above**: The installation location of RStudio might be different.
-> Try the following path as well:
-> ```bash
-> "C:\Program Files\RStudio\bin\rstudio.exe"
-> ```
-> If it still isn't found, right-click "RStudio" in the Start Menu → "Open file location" to check the path.
-
-> **💡 Explanation**: `RSTUDIO_WHICH_R` is an environment variable that tells RStudio "which R to use".
-> If you launch it this way, the R in the Conda environment will be used automatically.
-
-> **💡 Confirmation**: Once RStudio launches, confirm that `R version 4.3.2` is displayed in the Console (bottom-left panel).
-
-> **⚠️ Note**: Do not launch RStudio from the desktop or Start Menu shortcut.
-> Always follow the procedure above to launch from the Miniforge Prompt.
-
-#### (Alternative) Using R Directly Without RStudio
+#### (Alternative) Using R Directly Without Jupyter
 
 If the above method doesn't work, you can launch R directly from the Miniforge Prompt:
 
@@ -323,7 +278,7 @@ This lecture uses data from **GSE278962** (JIA Synovial CITE-seq).
 
 ## 6. Verifying Installation
 
-Launch RStudio (see Section 4) and execute the following script in the Console.
+Create a new R notebook in Jupyter Notebook (see Section 4) or launch R directly from the command line, and execute the following script.
 
 ```r
 # --- Version Verification Script ---
@@ -399,7 +354,7 @@ Then **close and reopen** the Terminal / Miniforge Prompt.
 
 ### Q3. Error During Package Installation
 
-**If it cannot be solved with Conda**, try installing directly from within R:
+**If it cannot be solved with Mamba**, try installing directly from within R:
 
 ```bash
 conda activate scworkshop
@@ -430,24 +385,24 @@ xcode-select --install
 **If a compilation error occurs on Windows:**
 Rtools may be required:
 ```bash
-conda install -c conda-forge m2w64-toolchain -y
+mamba install -c conda-forge m2w64-toolchain -y
 ```
 
-### Q4. RStudio Won't Launch / R Version Is Different
+### Q4. Cannot Select R in Jupyter Notebook / R Version Is Different
 
-Make sure to run `conda activate scworkshop` and launch using the `rstudio` command (or the full path on Windows).
-Launching from a desktop shortcut might use a different version of R.
+Make sure to run `conda activate scworkshop` and launch using the `jupyter notebook` command.
+Launching from another shortcut might use a different R or Python environment.
 
 ### Q5. Out of Memory Error Occurs
 
 - Close unnecessary applications.
-- Delete unnecessary objects in the RStudio Environment tab (`rm(object_name); gc()`).
+- Delete unnecessary objects in your code and run garbage collection (`rm(object_name); gc()`).
 
 ---
 
-## 8. Alternative: Environment Setup Without Conda
+## 8. Alternative: Environment Setup Without Mamba (Conda)
 
-If setting up the environment using Conda consistently fails, you can install R and RStudio (or Jupyter Notebook) separately and install the packages manually.
+If setting up the environment using Mamba consistently fails, you can install R and Jupyter Notebook (or RStudio) separately and install the packages manually.
 
 ### A. Installing R
 1. Access CRAN (The Comprehensive R Archive Network): https://cran.r-project.org/
@@ -457,9 +412,9 @@ If setting up the environment using Conda consistently fails, you can install R 
 1. Access the official Posit website: https://posit.co/download/rstudio-desktop/
 2. Download and install the free version of RStudio Desktop.
 
-### C. Setting up Jupyter Notebook (If using instead of RStudio)
-If you prefer to use Jupyter Notebook instead of RStudio, follow these steps:
-1. Open the R console or RStudio in an environment where Python/Jupyter is already installed.
+### C. Setting up Jupyter Notebook
+To use a standalone installed R inside Jupyter Notebook, follow these steps:
+1. Open the R console in an environment where Python/Jupyter is already installed.
 2. Run the following commands to install IRkernel:
    ```r
    install.packages("IRkernel")
@@ -468,7 +423,7 @@ If you prefer to use Jupyter Notebook instead of RStudio, follow these steps:
 3. You will now be able to select R when creating a new Jupyter Notebook.
 
 ### D. Manual Installation of R Packages
-Launch RStudio (or a Jupyter Notebook with the R kernel) and execute the following commands in the console to install the necessary packages.
+Launch a Jupyter Notebook with the R kernel (or the R console) and execute the following commands to install the necessary packages.
 
 ```r
 # Install CRAN packages
